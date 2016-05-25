@@ -14,7 +14,8 @@ WHITESPACE_RE = re.compile(r'\s+')
 
 CONFIG_TEMPLATE = {
     'DOC_MAX_LEN': 75,
-    'DOC_MAX_SIZE': 5e6
+    'DOC_MAX_SIZE': 5e6,
+    'ALLOWED_CONTENT_TYPES': ['text/html', 'text/plain']
 }
 
 
@@ -47,6 +48,12 @@ class UrlMatcher(BotPlugin):
         # files that are too big cause trouble. Let's just ignore them.
         if 'content-length' in r.headers and \
            int(r.headers['content-length']) > max_size:
+            return
+
+        # ignore anything that is not allowed in configuration
+        allowed_content_types = self.config['ALLOWED_CONTENT_TYPES']
+        if 'content-type' in r.headers and \
+           r.headers['content-type'] not in allowed_content_types:
             return
 
         html = requests.get(url).text
