@@ -19,7 +19,7 @@ CONFIG_TEMPLATE = {
 }
 
 
-class UrlMatcher(BotPlugin):    
+class UrlMatcher(BotPlugin):
     def configure(self, configuration):
         if configuration is not None and configuration != {}:
             config = dict(chain(CONFIG_TEMPLATE.items(),
@@ -52,9 +52,12 @@ class UrlMatcher(BotPlugin):
 
         # ignore anything that is not allowed in configuration
         allowed_content_types = self.config['ALLOWED_CONTENT_TYPES']
-        if 'content-type' in r.headers and \
-           r.headers['content-type'].split(';', 1)[0] not in allowed_content_types:
-            print(r.headers['content-type'])
+        content_type = ''
+        if 'content-type' in r.headers:
+            content_type = re.sub(r'\s*\;.*$', '', r.headers['content-type'])
+            content_type = content_type.strip()
+
+        if content_type not in allowed_content_types:
             return
 
         html = requests.get(url).text
@@ -79,11 +82,11 @@ class UrlMatcher(BotPlugin):
             description = readable_description
         else:
             description = readable_article
-        
+
         if description:
             return "~> {}\n~> {}\n~> {}".format(url,
                                             readable_title,
                                             description)
         else:
             return "~> {}\n~> {}".format(url,
-                                     readable_title)
+                                     readable_title) 
