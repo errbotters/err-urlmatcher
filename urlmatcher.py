@@ -54,6 +54,15 @@ class UrlMatcher(BotPlugin):
         allowed_content_types = self.config['ALLOWED_CONTENT_TYPES']
         content_type = ''
         if 'content-type' in r.headers:
+            # Make sure that we only care about the A/B content type
+            # identifier.
+            # For instance
+            #
+            #   text/html; charset=UTF-8
+            #
+            # becomes
+            #
+            #   text/html
             content_type = re.sub(r'\s*\;.*$', '', r.headers['content-type'])
             content_type = content_type.strip()
 
