@@ -57,7 +57,7 @@ class UrlMatcher(BotPlugin):
             content_type = re.sub(r'\s*\;.*$', '', r.headers['content-type'])
             content_type = content_type.strip()
 
-        if content_type in allowed_content_types:
+        if content_type not in allowed_content_types:
             return
 
         html = requests.get(url).text
