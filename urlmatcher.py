@@ -67,7 +67,7 @@ class UrlMatcher(BotPlugin):
         if len(readable_article) > max_len:
             readable_article = readable_article[:max_len] + '...'
 
-        readable_title = Document(html).short_title()
+        readable_title = Document(html).title()
 
         page = MetadataParser(html=html)
         readable_description = page.get_metadata('description')
