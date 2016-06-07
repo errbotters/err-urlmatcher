@@ -85,8 +85,8 @@ class UrlMatcher(BotPlugin):
 
         if description:
             return "~> {}\n~> {}\n~> {}".format(url,
-                                            readable_title,
-                                            description)
+                                                readable_title,
+                                                description)
         else:
             return "~> {}\n~> {}".format(url,
-                                     readable_title) 
+                                         readable_title)
